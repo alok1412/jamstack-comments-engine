@@ -1,67 +1,69 @@
 'use strict';
 
-var request = require("request");
+let request = require("request");
 
 // populate environment variables locally.
-require('dotenv').config()
+require('dotenv').config();
 
-const URL = "https://elastic-blackwell-834779.netlify.app/";
+// Handle the lambda invocation
+exports.handler = function(event, context, callback) {
 
-/*
-  Our serverless function handler
-*/
-export function handler(event, context, callback) {
+    // check auth
+    let queryStringParameters = event.queryStringParameters;
+    if (queryStringParameters["VECTRONIC_FUNCTION_AUTH"] !== process.env.VECTRONIC_FUNCTION_AUTH) {
+        return console.log("VECTRONIC_FUNCTION_AUTH query param incorrect");
+    }
 
-  // get the arguments from the notification
-  var body = JSON.parse(event.body);
+    // get the arguments from the notification
+    let body = JSON.parse(event.body);
 
-  // prepare call to the Slack API
-  var slackURL = process.env.SLACK_WEBHOOK_URL
-  var slackPayload = {
-    "text": "New comment on " + URL,
-	  "attachments": [
-      {
-        "fallback": "New comment on the comment example site",
-        "color": "#444",
-        "author_name": body.data.email,
-        "title": body.data.path,
-        "title_link": URL + body.data.path,
-        "text": body.data.comment
-      },
-      {
-        "fallback": "Manage comments on " + URL,
-        "callback_id": "comment-action",
-        "actions": [
-          {
-            "type": "button",
-            "text": "Approve comment",
-            "name": "approve",
-            "value": body.id
-          },
-          {
-            "type": "button",
-            "style": "danger",
-            "text": "Delete comment",
-            "name": "delete",
-            "value": body.id
-          }
-        ]
-      }]
+    // prepare call to the Slack API
+    let slackURL = process.env.SLACK_COMMENT_WEBHOOK_URL;
+    let slackPayload = {
+        "text": "New comment on " + process.env.URL,
+        "attachments": [
+            {
+                "fallback": "New comment on vectronic.io",
+                "color": "#444",
+                "author_name": body.data.first_name + " " + body.data.last_name,
+                "title": body.data.path,
+                "title_link": process.env.URL + body.data.path,
+                "text": body.data.comment
+            },
+            {
+                "fallback": "Manage comments on " + process.env.URL,
+                "callback_id": "comment-action",
+                "actions": [
+                    {
+                        "type": "button",
+                        "text": "Approve comment",
+                        "name": "approve",
+                        "value": body.id
+                    },
+                    {
+                        "type": "button",
+                        "style": "danger",
+                        "text": "Delete comment",
+                        "name": "delete",
+                        "value": body.id
+                    }
+                ]
+            }]
     };
 
     // post the notification to Slack
     request.post({url:slackURL, json: slackPayload}, function(err, httpResponse, body) {
-      var msg;
-      if (err) {
-        msg = 'Post to Slack failed:' + err;
-      } else {
-        msg = 'Post to Slack successful!  Server responded with:' + body;
-      }
-      callback(null, {
-        statusCode: 200,
-        body: msg
-      })
-      return console.log(msg);
+        let msg;
+        if (err) {
+            msg = 'Post to Slack failed:' + err;
+        }
+        else {
+            msg = 'Post to Slack successful!  Server responded with:' + body;
+        }
+        callback(null, {
+            statusCode: 200,
+            body: msg
+        });
+        return console.log(msg);
     });
-
-}
+};
