@@ -7,7 +7,7 @@ const {
 } = process.env;
 
 // hardcoding this for a moment... TODO: replace request with somethign that follows redirects
-const URL = "https://elastic-blackwell-834779.netlify.app/";
+const URL = "https://elastic-blackwell-834779.netlify.app";
 
 /*
   delete this submission via the api
