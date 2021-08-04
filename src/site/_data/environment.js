@@ -4,16 +4,17 @@
 module.exports = () => {
 
   const {
-    NETLIFY_AUTH_TOKEN = "dGiqRnuOWOkKJpYfHFTGhlHKoypxoPdaksRlkTmwDng",
-    SLACK_WEBHOOK_URL,
-    SITE_NAME
+    NETLIFY_API_AUTH,
+    NETLIFY_APPROVED_COMMENTS_FORM_ID,
+    SLACK_COMMENT_WEBHOOK_URL,
+    URL
   } = process.env;
 
   return {
-    ready : NETLIFY_AUTH_TOKEN && SLACK_WEBHOOK_URL ? true : false,
-    NETLIFY_AUTH_TOKEN_ready : NETLIFY_AUTH_TOKEN ? true : false,
-    SLACK_WEBHOOK_URL_ready : SLACK_WEBHOOK_URL ? true : false,
-    SITE_NAME
+    ready : NETLIFY_API_AUTH && SLACK_COMMENT_WEBHOOK_URL ? true : false,
+    NETLIFY_API_AUTH : NETLIFY_API_AUTH ? true : false,
+    SLACK_COMMENT_WEBHOOK_URL : SLACK_COMMENT_WEBHOOK_URL ? true : false,
+    URL
   }
 
 };
