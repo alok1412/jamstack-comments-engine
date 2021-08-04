@@ -2,7 +2,6 @@
   <h2>{{comments[page.url].length}} comments on this page</h2>
   <ul>
   {%- for comment in (comments[page.url] ) -%}
-  {{comment}}
     <li class="comment">
       <img class="avatar" src="{{ comment.avatar }}">
       <h3>{{ comment.name }}</h3>
