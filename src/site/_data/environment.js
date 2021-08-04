@@ -4,7 +4,7 @@
 module.exports = () => {
 
   const {
-    NETLIFY_AUTH_TOKEN,
+    NETLIFY_AUTH_TOKEN = "dGiqRnuOWOkKJpYfHFTGhlHKoypxoPdaksRlkTmwDng" ,
     SLACK_WEBHOOK_URL,
     SITE_NAME
   } = process.env;
