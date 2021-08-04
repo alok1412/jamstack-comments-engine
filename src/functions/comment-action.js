@@ -23,12 +23,6 @@ function purgeComment(id) {
 // Handle the lambda invocation
 exports.handler = function(event, context, callback) {
 
-    // check auth
-    let queryStringParameters = event.queryStringParameters;
-    if (queryStringParameters["VECTRONIC_FUNCTION_AUTH"] !== process.env.VECTRONIC_FUNCTION_AUTH) {
-        return console.log("VECTRONIC_FUNCTION_AUTH query param incorrect");
-    }
-
     // parse the payload
     let body = event.body.split("payload=")[1];
     let payload = JSON.parse(unescape(body));
