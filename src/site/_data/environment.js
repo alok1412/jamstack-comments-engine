@@ -5,8 +5,8 @@ module.exports = () => {
 
   const {
     NETLIFY_AUTH_TOKEN = "dGiqRnuOWOkKJpYfHFTGhlHKoypxoPdaksRlkTmwDng" ,
-    SLACK_WEBHOOK_URL,
-    SITE_NAME
+    SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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",
+    SITE_NAME = "https://elastic-blackwell-834779.netlify.app"
   } = process.env;
 
   return {
